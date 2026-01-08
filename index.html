@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Makar Sankranti</title>
+
+<style>
+html,body{margin:0;overflow:hidden;font-family:Segoe UI;background:#000}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%}
+#petal{z-index:1} #kite{z-index:2} #front{z-index:4}
+
+.container{
+ position:relative;z-index:6;max-width:420px;margin:30px auto;
+ background:rgba(255,255,255,.95);padding:18px;border-radius:16px;
+ text-align:center;box-shadow:0 12px 35px rgba(0,0,0,.5)
+}
+h1{color:#E65100;text-shadow:0 0 8px orange}
+
+.imgBox{position:relative}
+.imgBox img{width:100%;border-radius:12px}
+.overlayText{
+ position:absolute;bottom:0;width:100%;
+ color:#fff;font-size:18px;font-weight:bold;
+ text-shadow:0 0 12px gold,0 0 24px orange;
+ background:linear-gradient(transparent,rgba(0,0,0,.7));
+ padding:10px;border-radius:0 0 12px 12px
+}
+
+input,button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:none;font-size:16px}
+button{background:#E65100;color:#fff;font-weight:bold}
+
+.soundBtn{
+ margin-top:10px;
+ background:#2e7d32;
+ color:#fff;
+}
+
+.textBlast{
+ position:fixed;top:50%;left:50%;
+ transform:translate(-50%,-50%);
+ font-size:38px;font-weight:bold;
+ color:#FFD54F;z-index:7;
+ text-shadow:0 0 25px gold,0 0 50px orange,0 0 70px red;
+ animation:blast 3s forwards
+}
+@keyframes blast{
+ 0%{opacity:0;transform:scale(.3)}
+ 40%{opacity:1;transform:scale(1.4)}
+ 100%{opacity:0;transform:scale(2)}
+}
+
+/* AD SAFE AREA */
+.adBox{
+ position:fixed;
+ bottom:0;
+ width:100%;
+ text-align:center;
+ z-index:10;
+ background:#000;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="petal"></canvas>
+<canvas id="kite"></canvas>
+<canvas id="front"></canvas>
+
+<!-- SOUND -->
+<audio id="boomSound" preload="auto">
+ <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2c4d68a54c.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+<h1>🎆 Happy Makar Sankranti 🎆</h1>
+<p id="greet"></p>
+
+<div class="imgBox">
+ <img src="IMG-20260106-WA0000.jpg">
+ <div class="overlayText">
+  Happy Makar Sankranti<br>हार्दिक शुभकामनाएं
+ </div>
+</div>
+
+<input id="name" placeholder="अपना नाम लिखें">
+<button onclick="start()">Generate & Auto-Share</button>
+<button class="soundBtn" onclick="enableSound()">🔊 Fireworks Sound ON</button>
+</div>
+
+<!-- 🔥 ADS CODE (ADDED) -->
+<div class="adBox">
+<script>
+atOptions = {
+ 'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
+ 'format' : 'iframe',
+ 'height' : 60,
+ 'width' : 468,
+ 'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
+</div>
+
+<script>
+/* NAME */
+const qp=new URLSearchParams(location.search);
+const sender=qp.get('name');
+if(sender){
+ greet.innerText=`आपको ${sender} की तरफ से शुभकामनाएं!`;
+}
+
+/* START */
+function start(){
+ if(!name.value.trim()) return alert("नाम लिखें");
+ location.href=location.pathname+"?name="+encodeURIComponent(name.value.trim());
+}
+
+/* SOUND CONTROL */
+let soundOn=false;
+function enableSound(){
+ soundOn=true;
+ document.querySelector('.soundBtn').innerText="🔊 Sound Enabled";
+}
+
+/* CANVAS */
+const cvs=[petal,kite,front];
+function rs(){cvs.forEach(c=>{c.width=innerWidth;c.height=innerHeight})}
+rs(); onresize=rs;
+
+const P=petal.getContext('2d'),
+      K=kite.getContext('2d'),
+      F=front.getContext('2d');
+
+/* 🌸 PETALS */
+let petals=[...Array(35)].map(()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2+1}));
+function drawP(){
+ P.clearRect(0,0,innerWidth,innerHeight);
+ petals.forEach(pt=>{
+  pt.y+=pt.s; pt.x+=Math.sin(pt.y/35);
+  if(pt.y>innerHeight){pt.y=-20;pt.x=Math.random()*innerWidth}
+  P.fillStyle='rgba(255,182,193,.8)';
+  P.beginPath(); P.arc(pt.x,pt.y,4,0,6.28); P.fill();
+ });
+}
+
+/* 🪁 KITES */
+let kites=[...Array(14)].map(()=>({
+ x:Math.random()*innerWidth,
+ y:innerHeight+Math.random()*400,
+ s:Math.random()*1.3+.8
+}));
+function drawK(){
+ K.clearRect(0,0,innerWidth,innerHeight);
+ kites.forEach(o=>{
+  o.y-=0.7*o.s; o.x+=Math.sin(o.y/40)*2;
+  if(o.y<-100){o.y=innerHeight+100;o.x=Math.random()*innerWidth}
+  K.fillStyle='#FF5722';
+  K.beginPath();
+  K.moveTo(o.x,o.y);
+  K.lineTo(o.x+22,o.y+30);
+  K.lineTo(o.x,o.y+60);
+  K.lineTo(o.x-22,o.y+30);
+  K.closePath(); K.fill();
+ });
+}
+
+/* 🎆 3D NEON FIREWORKS */
+let fw=[];
+function blast(x,y){
+ if(soundOn){
+  const s=document.getElementById('boomSound');
+  s.currentTime=0; s.play().catch(()=>{});
+ }
+ for(let i=0;i<160;i++){
+  let a=Math.random()*Math.PI*2;
+  fw.push({
+   x,y,
+   vx:Math.cos(a)*(Math.random()*5),
+   vy:Math.sin(a)*(Math.random()*5),
+   z:Math.random()*2+1,
+   l:90,
+   c:`hsl(${Math.random()*360},100%,60%)`
+  });
+ }
+}
+function drawFW(){
+ F.clearRect(0,0,innerWidth,innerHeight);
+ fw.forEach((o,i)=>{
+  o.x+=o.vx*o.z; o.y+=o.vy*o.z; o.vy+=0.03; o.l--;
+  F.shadowBlur=25;
+  F.shadowColor=o.c;
+  F.fillStyle=o.c;
+  F.fillRect(o.x,o.y,o.z*2,o.z*2);
+  if(o.l<=0) fw.splice(i,1);
+ });
+}
+
+/* AUTO BLAST */
+setInterval(()=>blast(Math.random()*innerWidth,Math.random()*innerHeight*0.6),900);
+setInterval(()=>{
+ blast(innerWidth/2,innerHeight/2);
+ let t=document.createElement('div');
+ t.className='textBlast';
+ t.innerText='Happy Makar Sankranti';
+ document.body.appendChild(t);
+ setTimeout(()=>t.remove(),3000);
+},6500);
+
+/* LOOP */
+(function loop(){
+ drawP(); drawK(); drawFW();
+ requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
