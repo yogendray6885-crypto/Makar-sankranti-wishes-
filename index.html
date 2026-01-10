@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -8,17 +6,29 @@
 <title>Happy Makar Sankranti</title>
 
 <style>
-html,body{margin:0;overflow:hidden;font-family:Segoe UI;background:#000}
-canvas{position:fixed;top:0;left:0;width:100%;height:100%}
-#petal{z-index:1}
-#kite{z-index:2}
-#front{z-index:7;pointer-events:none}
+html,body{
+ margin:0;
+ padding:0;
+ overflow:hidden;
+ font-family:Segoe UI;
+ background:#000;
+}
+
+canvas{
+ position:fixed;
+ top:0;left:0;
+ width:100%;height:100%;
+}
+
+#bg{z-index:1}
+#mid{z-index:2}
+#front{z-index:6;pointer-events:none}
 
 .container{
  position:relative;
- z-index:9;
+ z-index:8;
  max-width:360px;
- margin:18px auto 80px;
+ margin:20px auto 130px;
  background:#fff;
  padding:14px;
  border-radius:14px;
@@ -26,29 +36,52 @@ canvas{position:fixed;top:0;left:0;width:100%;height:100%}
  box-shadow:0 10px 30px rgba(0,0,0,.4)
 }
 
-h1{font-size:22px;color:#E65100;margin:6px 0}
-.greet{font-size:15px;font-weight:bold;color:#2e7d32}
+h1{color:#e65100;margin:6px 0}
+.greet{color:#2e7d32;font-weight:bold}
 
-.imgBox{position:relative;overflow:hidden;border-radius:10px}
-.imgBox img{width:100%;animation:zoom 6s infinite alternate}
-@keyframes zoom{from{scale:1}to{scale:1.08}}
+.imgBox{
+ position:relative;
+ overflow:hidden;
+ border-radius:10px;
+}
+.imgBox img{
+ width:100%;
+ animation:zoom 6s infinite alternate;
+}
+@keyframes zoom{
+ from{transform:scale(1)}
+ to{transform:scale(1.07)}
+}
 
-.overlayText{
- position:absolute;bottom:0;width:100%;padding:6px;
- font-size:15px;font-weight:bold;color:#fff;
+.overlay{
+ position:absolute;
+ bottom:0;
+ width:100%;
+ padding:6px;
+ color:#fff;
+ font-weight:bold;
  background:linear-gradient(transparent,rgba(0,0,0,.7));
 }
 
 input{
- width:100%;padding:10px;margin-top:8px;
- border-radius:6px;border:1px solid #ccc;font-size:15px
+ width:100%;
+ padding:10px;
+ margin-top:8px;
+ font-size:15px;
+ border-radius:6px;
+ border:1px solid #ccc;
 }
 
 .shareBtn{
- width:100%;margin-top:12px;padding:14px;
- font-size:18px;font-weight:bold;border:none;
- border-radius:10px;background:#25D366;color:#fff;
- display:flex;justify-content:center;gap:10px;
+ width:100%;
+ margin-top:12px;
+ padding:14px;
+ font-size:18px;
+ font-weight:bold;
+ border:none;
+ border-radius:10px;
+ background:#25D366;
+ color:#fff;
  animation:pulse 1.5s infinite;
 }
 
@@ -58,32 +91,31 @@ input{
  100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}
 }
 
-.stickyShare{
- position:fixed;bottom:70px;left:50%;
- transform:translateX(-50%);z-index:12;
+.sticky{
+ position:fixed;
+ bottom:70px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:9;
+ width:90%;
 }
 
-.flyingText{
+/* ADS */
+#adBox{
  position:fixed;
- font-size:22px;
- font-weight:bold;
- color:#FFD700;
- text-shadow:0 0 15px gold;
- z-index:8;
- pointer-events:none;
- animation:fly 8s linear forwards;
-}
-@keyframes fly{
- from{transform:translateX(-120%)}
- to{transform:translateX(120%)}
+ bottom:0;
+ width:100%;
+ text-align:center;
+ background:#000;
+ z-index:9999;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="petal"></canvas>
-<canvas id="kite"></canvas>
+<canvas id="bg"></canvas>
+<canvas id="mid"></canvas>
 <canvas id="front"></canvas>
 
 <div class="container">
@@ -92,208 +124,148 @@ input{
 
 <div class="imgBox">
  <img src="IMG-20260106-WA0000.jpg">
- <div class="overlayText">हार्दिक शुभकामनाएं 🪁</div>
+ <div class="overlay">हार्दिक शुभकामनाएं 🪁</div>
 </div>
 
 <input id="name" placeholder="अपना नाम लिखें">
 </div>
 
-<div class="stickyShare">
+<div class="sticky">
 <button class="shareBtn" onclick="shareNow()">🟢 Share with WhatsApp</button>
 </div>
 
+<!-- ADS (BOTTOM FIXED) -->
+<div id="adBox">
 <script>
-/* GREET */
-const q=new URLSearchParams(location.search);
-const s=q.get("name");
-if(s) greet.innerText=`आपको ${s} की तरफ से हार्दिक शुभकामनाएं 🪁`;
+atOptions = {
+ 'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
+ 'format' : 'iframe',
+ 'height' : 60,
+ 'width' : 468,
+ 'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
+</div>
 
-/* SHARE */
+<script>
+/* GREETING FROM LINK */
+const q = new URLSearchParams(location.search);
+const s = q.get("name");
+if(s){
+ document.getElementById("greet").innerText =
+ "आपको " + s + " की तरफ से हार्दिक शुभकामनाएं 🪁";
+}
+
+/* ✅ WHATSAPP SHARE – GUARANTEED */
 function shareNow(){
- let n=name.value.trim();
- if(!n) return alert("नाम लिखें");
- let link=location.origin+location.pathname+"?name="+encodeURIComponent(n);
- let msg=`🎆 Happy Makar Sankranti 🎆\n${n} की तरफ से शुभकामनाएं 🪁\n${link}`;
- navigator.vibrate?.(200);
- window.location="https://wa.me/?text="+encodeURIComponent(msg);
+ var n = document.getElementById("name").value.trim();
+ if(!n){
+  alert("कृपया अपना नाम लिखें");
+  return;
+ }
+
+ var link = location.origin + location.pathname + "?name=" + encodeURIComponent(n);
+
+ var msg =
+ "🎆 Happy Makar Sankranti 🎆\n\n" +
+ n + " की तरफ से हार्दिक शुभकामनाएं 🪁\n\n" +
+ link;
+
+ var wa = "https://wa.me/?text=" + encodeURIComponent(msg);
+
+ // 🔥 MOST RELIABLE REDIRECT
+ location.href = wa;
 }
 
 /* CANVAS SETUP */
-const F=front.getContext("2d");
-front.width=innerWidth;front.height=innerHeight;
-onresize=()=>{front.width=innerWidth;front.height=innerHeight}
+const bgc = bg.getContext("2d"),
+      midc = mid.getContext("2d"),
+      frc = front.getContext("2d");
 
-/* FRONT FIREWORKS */
+function resize(){
+ bg.width = mid.width = front.width = innerWidth;
+ bg.height = mid.height = front.height = innerHeight;
+}
+resize(); onresize = resize;
+
+/* PETALS */
+let petals=[...Array(30)].map(()=>({
+ x:Math.random()*innerWidth,
+ y:Math.random()*innerHeight,
+ s:Math.random()*2+1
+}));
+
+function drawPetals(){
+ bgc.clearRect(0,0,innerWidth,innerHeight);
+ petals.forEach(p=>{
+  p.y+=p.s;
+  p.x+=Math.sin(p.y/40);
+  if(p.y>innerHeight){p.y=-20;p.x=Math.random()*innerWidth}
+  bgc.fillStyle="rgba(255,182,193,.8)";
+  bgc.beginPath();
+  bgc.arc(p.x,p.y,4,0,6.28);
+  bgc.fill();
+ });
+}
+
+/* KITES */
+let kites=[...Array(8)].map(()=>({
+ x:Math.random()*innerWidth,
+ y:innerHeight+Math.random()*200,
+ s:Math.random()+0.5
+}));
+
+function drawKites(){
+ midc.clearRect(0,0,innerWidth,innerHeight);
+ kites.forEach(k=>{
+  k.y-=0.7*k.s;
+  k.x+=Math.sin(k.y/30);
+  if(k.y<-100){k.y=innerHeight+100;k.x=Math.random()*innerWidth}
+  midc.fillStyle="#ff5722";
+  midc.beginPath();
+  midc.moveTo(k.x,k.y);
+  midc.lineTo(k.x+18,k.y+28);
+  midc.lineTo(k.x,k.y+56);
+  midc.lineTo(k.x-18,k.y+28);
+  midc.closePath();
+  midc.fill();
+ });
+}
+
+/* FRONT FIREWORK */
 let fw=[];
 function blast(x,y){
- for(let i=0;i<100;i++){
+ for(let i=0;i<80;i++){
   let a=Math.random()*6.28;
   fw.push({
    x,y,
-   vx:Math.cos(a)*5,
-   vy:Math.sin(a)*5,
-   l:60,
-   c:`hsl(${Math.random()*360},100%,60%)`
+   vx:Math.cos(a)*4,
+   vy:Math.sin(a)*4,
+   l:50
   });
  }
 }
 function drawFW(){
- F.clearRect(0,0,innerWidth,innerHeight);
+ frc.clearRect(0,0,innerWidth,innerHeight);
  fw.forEach((p,i)=>{
-  p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.l--;
-  F.fillStyle=p.c;
-  F.shadowBlur=20;
-  F.shadowColor=p.c;
-  F.fillRect(p.x,p.y,4,4);
+  p.x+=p.vx;p.y+=p.vy;p.vy+=0.04;p.l--;
+  frc.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+  frc.fillRect(p.x,p.y,3,3);
   if(p.l<0) fw.splice(i,1);
  });
- requestAnimationFrame(drawFW);
 }
-drawFW();
 
-/* TAP ACTIVITY */
-addEventListener("click",e=>{
- blast(e.clientX,e.clientY);
-});
-
-/* SPARKLE TRAIL */
-addEventListener("mousemove",e=>{
- F.fillStyle="rgba(255,215,0,.8)";
- F.fillRect(e.clientX,e.clientY,2,2);
-});
-
-/* FLYING TEXT */
-setInterval(()=>{
- let t=document.createElement("div");
- t.className="flyingText";
- t.style.top=Math.random()*60+10+"%";
- t.innerText="🪁 Happy Makar Sankranti 🪁";
- document.body.appendChild(t);
- setTimeout(()=>t.remove(),8000);
-},4000);
-
-/* AUTO BLAST */
 setInterval(()=>blast(Math.random()*innerWidth,Math.random()*innerHeight*0.5),1800);
+
+/* LOOP */
+(function loop(){
+ drawPetals();
+ drawKites();
+ drawFW();
+ requestAnimationFrame(loop);
+})();
 </script>
 
 </body>
 </html>
-<script>
-/* 🌈 FLOATING EMOJIS */
-const emojis=["🪁","🔥","🎉","💛","✨"];
-setInterval(()=>{
- let e=document.createElement("div");
- e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
- e.style.position="fixed";
- e.style.left=Math.random()*100+"%";
- e.style.bottom="-20px";
- e.style.fontSize=(20+Math.random()*20)+"px";
- e.style.zIndex=5;
- e.style.transition="transform 6s linear, opacity 6s";
- document.body.appendChild(e);
- setTimeout(()=>{
-  e.style.transform="translateY(-110vh)";
-  e.style.opacity=0;
- },50);
- setTimeout(()=>e.remove(),6000);
-},700);
-
-/* 💥 CONFETTI */
-function confettiBurst(){
- for(let i=0;i<80;i++){
-  let c=document.createElement("div");
-  c.style.position="fixed";
-  c.style.width="6px";
-  c.style.height="6px";
-  c.style.background=`hsl(${Math.random()*360},100%,60%)`;
-  c.style.left="50%";
-  c.style.top="40%";
-  c.style.borderRadius="50%";
-  c.style.zIndex=20;
-  document.body.appendChild(c);
-  let x=(Math.random()-0.5)*300;
-  let y=(Math.random()-0.5)*300;
-  c.animate([
-    {transform:"translate(0,0)",opacity:1},
-    {transform:`translate(${x}px,${y}px)`,opacity:0}
-  ],{duration:1500,easing:"ease-out"});
-  setTimeout(()=>c.remove(),1500);
- }
-}
-setTimeout(confettiBurst,3000);
-
-/* 💚 WHATSAPP CLICK FLASH */
-const oldShare=window.shareNow;
-window.shareNow=function(){
- let flash=document.createElement("div");
- flash.style.position="fixed";
- flash.style.inset=0;
- flash.style.background="rgba(37,211,102,0.25)";
- flash.style.zIndex=50;
- document.body.appendChild(flash);
- setTimeout(()=>flash.remove(),300);
- confettiBurst();
- oldShare();
-};
-
-/* ✍️ TYPEWRITER GLOW */
-const title=document.querySelector("h1");
-const txt=title.innerText;
-title.innerText="";
-let i=0;
-(function type(){
- if(i<txt.length){
-  title.innerText+=txt[i++];
-  title.style.textShadow="0 0 15px gold";
-  setTimeout(type,80);
- }
-})();
-
-/* 📦 CARD SHAKE ON INPUT */
-const inp=document.getElementById("name");
-const box=document.querySelector(".container");
-inp.addEventListener("input",()=>{
- box.animate([
-  {transform:"translateX(0)"},
-  {transform:"translateX(-2px)"},
-  {transform:"translateX(2px)"},
-  {transform:"translateX(0)"}
- ],{duration:200});
-});
-</script>
-<script>
-  atOptions = {
-    'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
-<script>
-function shareNow(){
-  let n = name.value.trim();
-  if(!n){
-    alert("नाम लिखें");
-    return;
-  }
-
-  let link = location.origin + location.pathname + "?name=" + encodeURIComponent(n);
-  let msg  = `🎆 Happy Makar Sankranti 🎆\n${n} की तरफ से शुभकामनाएं 🪁\n${link}`;
-
-  // 🔹 Mobile WhatsApp direct
-  let waApp = "whatsapp://send?text=" + encodeURIComponent(msg);
-
-  // 🔹 Browser fallback
-  let waWeb = "https://wa.me/?text=" + encodeURIComponent(msg);
-
-  // Try app first
-  window.location.href = waApp;
-
-  // If app not opened, fallback to web
-  setTimeout(()=>{
-    window.location.href = waWeb;
-  },800);
-}
-</script>
