@@ -7,9 +7,9 @@
 
 <style>
 html,body{
-margin:0;overflow:hidden;
-font-family:Segoe UI,system-ui;
-background:#000;color:#fff
+  margin:0;overflow:hidden;
+  font-family:Segoe UI,system-ui;
+  background:#000;color:#fff;
 }
 canvas{position:fixed;inset:0;pointer-events:none}
 #galaxy{z-index:0}
@@ -17,28 +17,28 @@ canvas{position:fixed;inset:0;pointer-events:none}
 
 /* MAIN CARD */
 .container{
-position:relative;z-index:10;
-max-width:360px;margin:16px auto 170px;
-background:#fff;color:#000;
-padding:14px;border-radius:16px;
-box-shadow:0 20px 60px rgba(0,0,0,.7);
-text-align:center
+  position:relative;z-index:10;
+  max-width:360px;margin:16px auto 170px;
+  background:#fff;color:#000;
+  padding:14px;border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
+  text-align:center;
 }
 h1{
-font-size:22px;
-animation:rainbow 4s linear infinite;
+  font-size:22px;
+  animation:rainbow 4s linear infinite;
 }
 @keyframes rainbow{
-0%{color:#ff1744}
-20%{color:#ffea00}
-40%{color:#00e5ff}
-60%{color:#76ff03}
-80%{color:#e040fb}
-100%{color:#ff1744}
+  0%{color:#ff1744}
+  20%{color:#ffea00}
+  40%{color:#00e5ff}
+  60%{color:#76ff03}
+  80%{color:#e040fb}
+  100%{color:#ff1744}
 }
 .greet{
-font-weight:bold;
-text-shadow:0 0 8px gold,0 0 18px orange;
+  font-weight:bold;
+  text-shadow:0 0 8px gold,0 0 18px orange;
 }
 
 .imgBox{border-radius:12px;overflow:hidden}
@@ -46,89 +46,91 @@ text-shadow:0 0 8px gold,0 0 18px orange;
 @keyframes zoom{to{transform:scale(1.12)}}
 
 .overlay{
-position:absolute;bottom:0;width:100%;
-padding:6px;color:#fff;
-background:linear-gradient(transparent,rgba(0,0,0,.7))
+  position:absolute;bottom:0;width:100%;
+  padding:6px;color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.7))
 }
 
 input{
-width:100%;padding:12px;
-border-radius:8px;border:1px solid #ccc;
-margin-top:10px;font-size:16px
+  width:100%;padding:12px;
+  border-radius:8px;border:1px solid #ccc;
+  margin-top:10px;font-size:16px
 }
 
 /* SHARE */
 .shareWrap{
-position:fixed;bottom:60px;
-left:50%;transform:translateX(-50%);
-width:92%;z-index:20
+  position:fixed;bottom:60px;
+  left:50%;transform:translateX(-50%);
+  width:92%;z-index:20
 }
 .shareBtn{
-display:flex;align-items:center;justify-content:center;
-gap:10px;width:100%;padding:14px;
-border:none;border-radius:16px;
-background:#25D366;color:#fff;
-font-size:18px;font-weight:bold;
-box-shadow:0 0 40px #25D366;
-animation:pulse 1.4s infinite
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;width:100%;padding:14px;
+  border:none;border-radius:16px;
+  background:#25D366;color:#fff;
+  font-size:18px;font-weight:bold;
+  box-shadow:0 0 40px #25D366;
+  animation:pulse 1.4s infinite;
+  cursor:pointer;
 }
+.shareBtn svg{vertical-align:middle;}
 @keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(37,211,102,.7)}
-70%{box-shadow:0 0 0 26px rgba(37,211,102,0)}
-100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}
+  0%{box-shadow:0 0 0 0 rgba(37,211,102,.7)}
+  70%{box-shadow:0 0 0 26px rgba(37,211,102,0)}
+  100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}
 }
 
 .counter{
-margin-top:6px;
-font-size:14px;
-color:#ff5722;
-font-weight:bold
+  margin-top:6px;
+  font-size:14px;
+  color:#ff5722;
+  font-weight:bold
 }
 
 /* FLOAT TEXT */
 .float{
-position:fixed;font-size:22px;
-font-weight:bold;z-index:8;
-animation:fly 6s linear forwards,rainbow 3s linear infinite;
+  position:fixed;font-size:22px;
+  font-weight:bold;z-index:8;
+  animation:fly 6s linear forwards,rainbow 3s linear infinite;
 }
 @keyframes fly{
-from{transform:translateX(-120%)}
-to{transform:translateX(120%)}
+  from{transform:translateX(-120%)}
+  to{transform:translateX(120%)}
 }
 
 /* KITES */
 .kite{
-position:fixed;font-size:32px;
-z-index:4;
-animation:kiteFly 14s linear forwards
+  position:fixed;font-size:32px;
+  z-index:4;
+  animation:kiteFly 14s linear forwards
 }
 @keyframes kiteFly{
-from{transform:translate(-50px,100vh) rotate(0deg)}
-to{transform:translate(110vw,-150px) rotate(25deg)}
+  from{transform:translate(-50px,100vh) rotate(0deg)}
+  to{transform:translate(110vw,-150px) rotate(25deg)}
 }
 
 /* NAME EXPLODE */
 .nameBlast{
-position:fixed;left:50%;top:40%;
-transform:translate(-50%,-50%);
-font-size:32px;font-weight:bold;
-z-index:15;
-animation:explode 1.6s ease-out forwards;
-text-shadow:0 0 10px gold,0 0 30px orange;
+  position:fixed;left:50%;top:40%;
+  transform:translate(-50%,-50%);
+  font-size:32px;font-weight:bold;
+  z-index:15;
+  animation:explode 1.6s ease-out forwards;
+  text-shadow:0 0 10px gold,0 0 30px orange;
 }
 @keyframes explode{
-0%{transform:translate(-50%,-50%) scale(0.3);opacity:0}
-40%{transform:translate(-50%,-50%) scale(1.3);opacity:1}
-100%{transform:translate(-50%,-80%) scale(0.6);opacity:0}
+  0%{transform:translate(-50%,-50%) scale(0.3);opacity:0}
+  40%{transform:translate(-50%,-50%) scale(1.3);opacity:1}
+  100%{transform:translate(-50%,-80%) scale(0.6);opacity:0}
 }
 
 /* LITE MODE TOGGLE */
 #liteBtn{
-position:fixed;top:10px;right:10px;
-z-index:30;padding:6px 10px;
-border-radius:20px;border:none;
-background:#fff;color:#000;
-font-size:13px
+  position:fixed;top:10px;right:10px;
+  z-index:30;padding:6px 10px;
+  border-radius:20px;border:none;
+  background:#fff;color:#000;
+  font-size:13px;
 }
 </style>
 </head>
@@ -155,7 +157,11 @@ font-size:13px
 
 <div class="shareWrap">
 <button class="shareBtn" onclick="shareNow()">
-Share with WhatsApp
+  <svg width="26" height="26" viewBox="0 0 32 32" fill="#fff">
+    <path d="M19.11 17.21c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.54-.45-.47-.61-.48-.16-.01-.34-.01-.52-.01-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27 0 1.34.98 2.63 1.12 2.81.14.18 1.93 2.95 4.68 4.13.65.28 1.15.45 1.55.57.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.82-1.27.23-.63.23-1.16.16-1.27-.07-.11-.25-.18-.52-.32z"/>
+    <path d="M16.02 2.67C8.66 2.67 2.67 8.66 2.67 16c0 2.6.78 5.01 2.11 7.04L2 30l7.14-2.74c1.96 1.07 4.21 1.69 6.88 1.69 7.36 0 13.35-5.99 13.35-13.35S23.38 2.67 16.02 2.67zm0 24.01c-2.32 0-4.47-.63-6.32-1.73l-.45-.27-4.23 1.62 1.62-4.12-.29-.47c-1.2-1.9-1.89-4.15-1.89-6.71 0-6.64 5.4-12.03 12.03-12.03s12.03 5.4 12.03 12.03-5.4 12.03-12.03 12.03z"/>
+  </svg>
+  <span>Share with WhatsApp</span>
 </button>
 </div>
 
@@ -178,47 +184,63 @@ let COUNT = LOW?120:260;
 const q=new URLSearchParams(location.search);
 const sender=q.get("name");
 if(sender){
-greet.innerText=`आपको ${sender} की तरफ से शुभकामनाएं 🪁`;
-let n=document.createElement("div");
-n.className="nameBlast";n.innerText=sender;
-document.body.appendChild(n);
-setTimeout(()=>n.remove(),1600);
+  greet.innerText=`आपको ${sender} की तरफ से शुभकामनाएं 🪁`;
+  let n=document.createElement("div");
+  n.className="nameBlast";n.innerText=sender;
+  document.body.appendChild(n);
+  setTimeout(()=>n.remove(),1600);
 }
 
 /* ===== SHARE ===== */
 function shareNow(){
-let n=name.value.trim();
-if(!n)return alert("नाम लिखें");
-let link=location.origin+location.pathname+"?name="+encodeURIComponent(n);
-location.href="https://wa.me/?text="+encodeURIComponent(
-`🌈🎆 Happy Makar Sankranti 🎆🌈\n${n} की तरफ से शुभकामनाएं 🪁\n${link}`
-);
+  let n = name.value.trim();
+  if(!n){
+    alert("नाम लिखें");
+    return;
+  }
+
+  let link =
+    location.origin +
+    location.pathname +
+    "?name=" +
+    encodeURIComponent(n);
+
+  let msg =
+`🌈🎆 Happy Makar Sankranti 🎆🌈
+${n} की तरफ से शुभकामनाएं 🪁
+👇👇👇
+${link}`;
+
+  window.open(
+    "https://wa.me/?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
 }
 
 /* COUNTER */
 setInterval(()=>{
-document.querySelector(".counter").innerText=
-`🔥 ${Math.floor(12000+Math.random()*2000)} लोगों ने शेयर किया`;
+  document.querySelector(".counter").innerText=
+  `🔥 ${Math.floor(12000+Math.random()*2000)} लोगों ने शेयर किया`;
 },2000);
 
 /* FLOAT TEXT */
 setInterval(()=>{
-let d=document.createElement("div");
-d.className="float";
-d.style.top=Math.random()*70+"%";
-d.innerText="🪁 मकर संक्रांति की शुभकामनाएं 🪁";
-document.body.appendChild(d);
-setTimeout(()=>d.remove(),6000);
+  let d=document.createElement("div");
+  d.className="float";
+  d.style.top=Math.random()*70+"%";
+  d.innerText="🪁 मकर संक्रांति की शुभकामनाएं 🪁";
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),6000);
 },5000);
 
 /* KITES */
 setInterval(()=>{
-let k=document.createElement("div");
-k.className="kite";
-k.style.left=Math.random()*50+"vw";
-k.innerText="🪁";
-document.body.appendChild(k);
-setTimeout(()=>k.remove(),14000);
+  let k=document.createElement("div");
+  k.className="kite";
+  k.style.left=Math.random()*50+"vw";
+  k.innerText="🪁";
+  document.body.appendChild(k);
+  setTimeout(()=>k.remove(),14000);
 },3500);
 
 /* ===== GALAXY BACKGROUND ===== */
@@ -227,15 +249,15 @@ function rsG(){g.width=innerWidth;g.height=innerHeight}
 rsG();addEventListener("resize",rsG);
 let stars=[];
 for(let i=0;i<200;i++)
-stars.push({x:Math.random()*g.width,y:Math.random()*g.height,s:Math.random()*2});
+  stars.push({x:Math.random()*g.width,y:Math.random()*g.height,s:Math.random()*2});
 (function galaxy(){
-gx.clearRect(0,0,g.width,g.height);
-gx.fillStyle="#fff";
-stars.forEach(st=>{
-gx.globalAlpha=Math.random();
-gx.fillRect(st.x,st.y,st.s,st.s);
-});
-requestAnimationFrame(galaxy);
+  gx.clearRect(0,0,g.width,g.height);
+  gx.fillStyle="#fff";
+  stars.forEach(st=>{
+    gx.globalAlpha=Math.random();
+    gx.fillRect(st.x,st.y,st.s,st.s);
+  });
+  requestAnimationFrame(galaxy);
 })();
 
 /* ===== RAINBOW FIREWORKS + TEXT PARTICLES ===== */
@@ -245,41 +267,38 @@ rs();addEventListener("resize",rs);
 let parts=[],hue=0;
 
 class P{
-constructor(x,y,a,s){
-this.x=x;this.y=y;
-this.vx=Math.cos(a)*s;
-this.vy=Math.sin(a)*s;
-this.life=90;this.h=hue;
-}
-u(){this.vy+=0.08;this.x+=this.vx;this.y+=this.vy;this.life--}
-d(){
-ctx.fillStyle=`hsl(${this.h},100%,60%)`;
-ctx.fillRect(this.x,this.y,3,3);
-}
+  constructor(x,y,a,s){
+    this.x=x;this.y=y;
+    this.vx=Math.cos(a)*s;
+    this.vy=Math.sin(a)*s;
+    this.life=90;this.h=hue;
+  }
+  u(){this.vy+=0.08;this.x+=this.vx;this.y+=this.vy;this.life--}
+  d(){ctx.fillStyle=`hsl(${this.h},100%,60%)`;ctx.fillRect(this.x,this.y,3,3);}
 }
 function blast(X,Y){
-for(let i=0;i<COUNT;i++){
-let a=Math.random()*6.28;
-let s=Math.random()*9+2;
-parts.push(new P(X,Y,a,s));
-}
-hue=(hue+40)%360;
+  for(let i=0;i<COUNT;i++){
+    let a=Math.random()*6.28;
+    let s=Math.random()*9+2;
+    parts.push(new P(X,Y,a,s));
+  }
+  hue=(hue+40)%360;
 }
 setInterval(()=>blast(Math.random()*innerWidth,Math.random()*innerHeight*0.6),RATE);
 addEventListener("click",e=>blast(e.clientX,e.clientY));
 
 (function anim(){
-ctx.clearRect(0,0,c.width,c.height);
-parts.forEach((p,i)=>{p.u();p.d();if(p.life<=0)parts.splice(i,1)});
-requestAnimationFrame(anim);
+  ctx.clearRect(0,0,c.width,c.height);
+  parts.forEach((p,i)=>{p.u();p.d();if(p.life<=0)parts.splice(i,1)});
+  requestAnimationFrame(anim);
 })();
 
 /* ===== ULTRA LITE MODE TOGGLE ===== */
 liteBtn.onclick=()=>{
-LOW=!LOW;
-RATE=LOW?3000:1200;
-COUNT=LOW?80:260;
-liteBtn.innerText=LOW?"⚡ Lite ON":"⚡ Lite OFF";
+  LOW=!LOW;
+  RATE=LOW?3000:1200;
+  COUNT=LOW?80:260;
+  liteBtn.innerText=LOW?"⚡ Lite ON":"⚡ Lite OFF";
 };
 </script>
 
