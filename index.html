@@ -10,37 +10,56 @@ html,body{
 margin:0;padding:0;background:#000;
 font-family:Segoe UI,Arial;color:#fff;overflow:hidden;
 }
-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+canvas{position:fixed;inset:0;pointer-events:none}
 
 /* Card */
 .card{
-max-width:360px;margin:22px auto 220px;
-background:#fff;color:#000;border-radius:22px;
-padding:14px;text-align:center;
-z-index:5;position:relative;
-box-shadow:0 30px 100px rgba(0,0,0,.8);
+max-width:360px;
+margin:22px auto 230px;
+background:#fff;
+color:#000;
+border-radius:22px;
+padding:14px;
+text-align:center;
+z-index:5;
+position:relative;
+box-shadow:0 30px 100px rgba(0,0,0,.85);
 animation:pop .8s ease;
 }
-@keyframes pop{from{transform:scale(.8);opacity:0}to{scale:1;opacity:1}}
+@keyframes pop{
+from{transform:scale(.8);opacity:0}
+to{transform:scale(1);opacity:1}
+}
 
 h2{color:#ff5722}
 img{width:100%;border-radius:16px}
 input{
-width:100%;padding:12px;margin:10px 0;
-border-radius:10px;font-size:16px;
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+font-size:16px;
 border:1px solid #ccc;
 }
 
 /* Share Bar */
 .share{
-position:fixed;bottom:18px;left:0;right:0;
-display:grid;grid-template-columns:1fr 1fr;
-gap:12px;padding:0 14px;z-index:10;
+position:fixed;
+bottom:18px;
+left:0;right:0;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:0 14px;
+z-index:12;
 }
 .btn{
-padding:15px;border-radius:30px;
-border:none;color:#fff;
-font-size:15px;font-weight:700;
+padding:15px;
+border-radius:30px;
+border:none;
+color:#fff;
+font-size:15px;
+font-weight:700;
 cursor:pointer;
 transition:.15s;
 }
@@ -50,10 +69,30 @@ transition:.15s;
 .fb{background:#1877F2}
 .ig{background:#c13584}
 
-/* Ad box */
+/* Neon text */
+#glowText{
+position:fixed;
+top:28%;
+left:50%;
+transform:translateX(-50%);
+font-size:clamp(26px,6vw,76px);
+font-weight:900;
+text-align:center;
+z-index:11;
+color:#fff;
+text-shadow:
+0 0 10px #fff,
+0 0 25px #ff0,
+0 0 50px #ff5722,
+0 0 90px #f00;
+opacity:0;
+pointer-events:none;
+}
+
+/* Ads */
 .adbox{
 position:fixed;
-bottom:90px;
+bottom:95px;
 left:50%;
 transform:translateX(-50%);
 z-index:9;
@@ -63,30 +102,36 @@ z-index:9;
 
 <body>
 
+<!-- BACK FIREWORKS -->
 <canvas id="fx"></canvas>
 
+<!-- FRONT FIREWORKS -->
+<canvas id="frontFx"></canvas>
+
+<!-- CARD -->
 <div class="card">
 <h2>🪁 Happy Makar Sankranti</h2>
 <div id="from"></div>
-<img src="IMG-20260106-WA0000.jpg">
+<img src="IMG-20260106-WA0000.jpg" alt="Makar Sankranti">
 <input id="name" placeholder="Apna naam likhiye">
 <p>Hardik shubhkamnaye 🙏</p>
 </div>
 
-<!-- ADS INTEGRATION -->
+<!-- ADS -->
 <div class="adbox">
 <script>
-  atOptions = {
-    'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
+atOptions={
+'key':'ac7411ad1c4de0e2a8b62b4fac4711d7',
+'format':'iframe',
+'height':60,
+'width':468,
+'params':{}
+};
 </script>
 <script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
 </div>
 
+<!-- SHARE BUTTONS -->
 <div class="share">
 <button class="btn wa" onclick="shareNow('wa')">WhatsApp</button>
 <button class="btn tg" onclick="shareNow('tg')">Telegram</button>
@@ -94,338 +139,136 @@ z-index:9;
 <button class="btn ig" onclick="shareNow('ig')">Instagram</button>
 </div>
 
+<!-- NEON TEXT -->
+<div id="glowText">🪁 HAPPY MAKAR SANKRANTI 🪁</div>
+
 <script>
-/* ===== Greeting ===== */
-const q=new URLSearchParams(location.search);
-if(q.get("from")){
+/* ================= GREETING ================= */
+const params=new URLSearchParams(location.search);
+const from=params.get("from");
+if(from){
 document.getElementById("from").innerText=
-q.get("from")+" ki taraf se shubhkamnaye 🙏";
+decodeURIComponent(from)+" ki taraf se shubhkamnaye 🙏";
 }
 
-/* ===== SHARE ENGINE (BUG-FREE) ===== */
-let lock=false;
+/* Always empty input */
+window.onload=()=>{document.getElementById("name").value="";}
+
+/* ================= SHARE ENGINE (CHAIN SAFE) ================= */
 function uid(){
-return Date.now().toString(36)+Math.random().toString(36).slice(2);
+return Date.now().toString(36)+Math.random().toString(36).slice(2,9);
 }
 
+let lock=false;
 function shareNow(type){
 if(lock) return;
+
 const n=document.getElementById("name").value.trim();
-if(!n){alert("Naam likhiye");return;}
-lock=true;setTimeout(()=>lock=false,300);
+if(!n){alert("Apna naam likhiye 🙏");return;}
+
+lock=true;setTimeout(()=>lock=false,400);
 
 const base=location.origin+location.pathname;
 const link=base+"?from="+encodeURIComponent(n)+"&id="+uid();
-const text="🪁 Happy Makar Sankranti 🪁\n"+n+
-" ki taraf se 🙏\n"+link;
+
+const text=`🪁 Happy Makar Sankranti 🪁
+${n} ki taraf se shubhkamnaye 🙏
+👇 Link khole aur apna naam dale
+${link}`;
 
 if(type==="wa"){
 location.href="https://wa.me/?text="+encodeURIComponent(text);
 }
 else if(type==="tg"){
-location.href="https://t.me/share/url?url="+
-encodeURIComponent(link)+"&text="+encodeURIComponent(text);
+location.href="https://t.me/share/url?url="+encodeURIComponent(link)+"&text="+encodeURIComponent(text);
 }
 else if(type==="fb"){
-location.href="https://www.facebook.com/sharer/sharer.php?u="+
-encodeURIComponent(link);
+location.href="https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(link);
 }
 else if(type==="ig"){
 navigator.clipboard.writeText(text).then(()=>{
 window.open("https://www.instagram.com/","_blank");
-alert("Text copied ✔\nInstagram me paste kare");
+alert("Message copy ho gaya ✔\nInstagram me paste kare");
 });
 }
 }
 
-/* ===== HEAVY SMOOTH EFFECTS ===== */
+/* ================= BACKGROUND FIREWORKS ================= */
 const c=document.getElementById("fx"),ctx=c.getContext("2d");
 function rs(){c.width=innerWidth;c.height=innerHeight}
-rs();onresize=rs;
+rs();addEventListener("resize",rs);
 
 let p=[];
 setInterval(()=>{
 let X=Math.random()*c.width,Y=Math.random()*c.height/2;
-for(let i=0;i<180;i++)
-p.push({
-x:X,y:Y,
-vx:(Math.random()-.5)*6,
-vy:(Math.random()-.5)*6,
-l:100,
-h:Math.random()*360
-});
-},800);
+for(let i=0;i<200;i++)
+p.push({x:X,y:Y,vx:(Math.random()-.5)*6,vy:(Math.random()-.5)*6,l:110,h:Math.random()*360});
+},750);
 
 (function anim(){
-ctx.fillStyle="rgba(0,0,0,.28)";
+ctx.fillStyle="rgba(0,0,0,.3)";
 ctx.fillRect(0,0,c.width,c.height);
 p.forEach((e,i)=>{
-e.x+=e.vx;e.y+=e.vy;
-e.vy+=.04;e.l--;
-ctx.fillStyle=`hsla(${e.h},100%,60%,${e.l/100})`;
+e.x+=e.vx;e.y+=e.vy;e.vy+=.04;e.l--;
+ctx.fillStyle=`hsla(${e.h},100%,60%,${e.l/110})`;
 ctx.fillRect(e.x,e.y,3,3);
 if(e.l<=0)p.splice(i,1);
 });
 requestAnimationFrame(anim);
 })();
+
+/* ================= FRONT FLYING FIREWORKS ================= */
+const fc=document.getElementById("frontFx"),f=fc.getContext("2d");
+function fr(){fc.width=innerWidth;fc.height=innerHeight}
+fr();addEventListener("resize",fr);
+
+let rockets=[],blasts=[];
+function launch(){
+rockets.push({
+x:Math.random()*fc.width,
+y:fc.height+20,
+vy:-(7+Math.random()*4),
+t:Math.random()*fc.height*.4,
+c:`hsl(${Math.random()*360},100%,60%)`
+});
+}
+setInterval(launch,600);
+
+function boom(x,y,c){
+for(let i=0;i<140;i++)
+blasts.push({x,y,vx:(Math.random()-.5)*8,vy:(Math.random()-.5)*8,l:90,c});
+}
+
+(function front(){
+f.clearRect(0,0,fc.width,fc.height);
+
+rockets.forEach((r,i)=>{
+r.y+=r.vy;
+f.fillStyle=r.c;
+f.beginPath();f.arc(r.x,r.y,3,0,Math.PI*2);f.fill();
+if(r.y<=r.t){boom(r.x,r.y,r.c);rockets.splice(i,1);}
+});
+
+blasts.forEach((b,i)=>{
+b.x+=b.vx;b.y+=b.vy;b.vy+=.05;b.l--;
+f.shadowBlur=18;
+f.shadowColor=b.c;
+f.fillStyle=`rgba(255,255,255,${b.l/90})`;
+f.fillRect(b.x,b.y,3,3);
+f.shadowBlur=0;
+if(b.l<=0)blasts.splice(i,1);
+});
+
+requestAnimationFrame(front);
+})();
+
+/* ================= NEON TEXT ================= */
+const glow=document.getElementById("glowText");
+setInterval(()=>{
+glow.style.opacity=1;
+setTimeout(()=>glow.style.opacity=0,4500);
+},5000);
 </script>
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>🪁 Happy Makar Sankranti</title>
-
-<style>
-html,body{
-margin:0;padding:0;background:#000;
-font-family:Segoe UI,Arial;color:#fff;overflow:hidden;
-}
-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
-
-/* Card */
-.card{
-max-width:360px; :22px auto 220px;
-background:#fff;color:#000;border-radius:22px;
-padding:14px;text-align:center;
-z-index:5;position:relative;
-box-shadow:0 30px 100px rgba(0,0,0,.8);
-animation:pop .8s ease;
-}
-@keyframes pop{from{transform:scale(.8);opacity:0}to{scale:1;opacity:1}}
-
-h2{color:#ff5722}
-img{width:100%;border-radius:16px}
-input{
-width:100%;padding:12px;margin:10px 0;
-border-radius:10px;font-size:16px;
-border:1px solid #ccc;
-}
-
-/* Share Bar */
-.share{
-position:fixed;bottom:18px;left:0;right:0;
-display:grid;grid-template-columns:1fr 1fr;
-gap:12px;padding:0 14px;z-index:10;
-}
-.btn{
-padding:15px;border-radius:30px;
-border:none;color:#fff;
-font-size:15px;font-weight:700;
-cursor:pointer;
-transition:.15s;
-}
-.btn:active{transform:scale(.94)}
-.wa{background:#25D366}
-.tg{background:#229ED9}
-.fb{background:#1877F2}
-.ig{background:#c13584}
-
-/* Ad box */
-.adbox{
-position:fixed;
-bottom:90px;
-left:50%;
-transform:translateX(-50%);
-z-index:9;
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="fx"></canvas>
-
-<div class="card">
-<h2>🪁 Happy Makar Sankranti</h2>
-<div id="from"></div>
-<img src="IMG-20260106-WA0000.jpg">
-<input id="name" placeholder="Apna naam likhiye">
-<p>Hardik shubhkamnaye 🙏</p>
-</div>
-
-<!-- ADS INTEGRATION -->
-<div class="adbox">
-<script>
-  atOptions = {
-    'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
-</div>
-
-<div class="share">
-<button class="btn wa" onclick="shareNow('wa')">WhatsApp</button>
-<button class="btn tg" onclick="shareNow('tg')">Telegram</button>
-<button class="btn fb" onclick="shareNow('fb')">Facebook</button>
-<button class="btn ig" onclick="shareNow('ig')">Instagram</button>
-</div>
-
-<script>
-/* ===== Greeting ===== */
-const q=new URLSearchParams(location.search);
-if(q.get("from")){
-document.getElementById("from").innerText=
-q.get("from")+" ki taraf se shubhkamnaye 🙏";
-}
-
-/* ===== SHARE ENGINE (BUG-FREE) ===== */
-let lock=false;
-function uid(){
-return Date.now().toString(36)+Math.random().toString(36).slice(2);
-}
-
-function shareNow(type){
-if(lock) return;
-const n=document.getElementById("name").value.trim();
-if(!n){alert("Naam likhiye");return;}
-lock=true;setTimeout(()=>lock=false,300);
-
-const base=location.origin+location.pathname;
-const link=base+"?from="+encodeURIComponent(n)+"&id="+uid();
-const text="🪁 Happy Makar Sankranti 🪁\n"+n+
-" ki taraf se 🙏\n"+link;
-
-if(type==="wa"){
-location.href="https://wa.me/?text="+encodeURIComponent(text);
-}
-else if(type==="tg"){
-location.href="https://t.me/share/url?url="+
-encodeURIComponent(link)+"&text="+encodeURIComponent(text);
-}
-else if(type==="fb"){
-location.href="https://www.facebook.com/sharer/sharer.php?u="+
-encodeURIComponent(link);
-}
-else if(type==="ig"){
-navigator.clipboard.writeText(text).then(()=>{
-window.open("https://www.instagram.com/","_blank");
-alert("Text copied ✔\nInstagram me paste kare");
-});
-}
-}
-
-/* ===== HEAVY SMOOTH EFFECTS ===== */
-const c=document.getElementById("fx"),ctx=c.getContext("2d");
-function rs(){c.width=innerWidth;c.height=innerHeight}
-rs();onresize=rs;
-
-let p=[];
-setInterval(()=>{
-let X=Math.random()*c.width,Y=Math.random()*c.height/2;
-for(let i=0;i<180;i++)
-p.push({
-x:X,y:Y,
-vx:(Math.random()-.5)*6,
-vy:(Math.random()-.5)*6,
-l:100,
-h:Math.random()*360
-});
-},800);
-
-(function anim(){
-ctx.fillStyle="rgba(0,0,0,.28)";
-ctx.fillRect(0,0,c.width,c.height);
-p.forEach((e,i)=>{
-e.x+=e.vx;e.y+=e.vy;
-e.vy+=.04;e.l--;
-ctx.fillStyle=`hsla(${e.h},100%,60%,${e.l/100})`;
-ctx.fillRect(e.x,e.y,3,3);
-if(e.l<=0)p.splice(i,1);
-});
-requestAnimationFrame(anim);
-})();
-</script>
-
-</body>
-</html
-<!-- FRONT FIREWORKS CANVAS -->
-<canvas id="frontFx"></canvas>
-
-<style>
-#frontFx{
-position:fixed;
-inset:0;
-z-index:8; /* card ke upar, ads ke neeche */
-pointer-events:none;
-}
-</style>
-
-<script>
-/* ===== FRONT FLYING FIREWORKS BLASTER ===== */
-const fc=document.getElementById("frontFx");
-const f=fc.getContext("2d");
-function fr(){fc.width=innerWidth;fc.height=innerHeight}
-fr();addEventListener("resize",fr);
-
-let rockets=[], blasts=[];
-
-/* Rocket class */
-function launchRocket(){
-rockets.push({
-x:Math.random()*fc.width,
-y:fc.height+20,
-vy:- (7+Math.random()*4),
-target:Math.random()*fc.height*0.4,
-color:`hsl(${Math.random()*360},100%,60%)`
-});
-}
-setInterval(launchRocket,700);
-
-/* Explosion */
-function explode(x,y,color){
-for(let i=0;i<120;i++){
-blasts.push({
-x,y,
-vx:(Math.random()-.5)*8,
-vy:(Math.random()-.5)*8,
-life:90,
-color
-});
-}
-}
-
-/* Animation loop */
-(function frontAnim(){
-f.clearRect(0,0,fc.width,fc.height);
-
-/* Rockets */
-rockets.forEach((r,i)=>{
-r.y+=r.vy;
-f.fillStyle=r.color;
-f.beginPath();
-f.arc(r.x,r.y,2.5,0,Math.PI*2);
-f.fill();
-
-if(r.y<=r.target){
-explode(r.x,r.y,r.color);
-rockets.splice(i,1);
-}
-});
-
-/* Blasts */
-blasts.forEach((b,i)=>{
-b.x+=b.vx;
-b.y+=b.vy;
-b.vy+=0.05;
-b.life--;
-
-f.fillStyle=`rgba(255,255,255,${b.life/100})`;
-f.shadowBlur=15;
-f.shadowColor=b.color;
-f.fillRect(b.x,b.y,3,3);
-f.shadowBlur=0;
-
-if(b.life<=0)blasts.splice(i,1);
-});
-
-requestAnimationFrame(frontAnim);
-})();
-</script>
