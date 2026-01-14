@@ -2,254 +2,430 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎆 Happy Makar Sankranti 🎆</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🪁 Happy Makar Sankranti</title>
+
 <style>
 html,body{
-  margin:0;
-  padding:0;
-  font-family:'Segoe UI',sans-serif;
-  background:#000;
-  overflow:hidden;
-  color:#fff;
+margin:0;padding:0;background:#000;
+font-family:Segoe UI,Arial;color:#fff;overflow:hidden;
 }
+canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
 
-/* CANVAS LAYERS */
-#bgCanvas,#frontCanvas{
-  position:fixed; inset:0; pointer-events:none;
+/* Card */
+.card{
+max-width:360px;margin:22px auto 220px;
+background:#fff;color:#000;border-radius:22px;
+padding:14px;text-align:center;
+z-index:5;position:relative;
+box-shadow:0 30px 100px rgba(0,0,0,.8);
+animation:pop .8s ease;
 }
-#bgCanvas{z-index:1}
-#frontCanvas{z-index:6}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{scale:1;opacity:1}}
 
-/* NEON MESSAGE */
-.neon-text{
-  position:fixed;
-  top:40%;
-  width:100%;
-  text-align:center;
-  font-size:clamp(28px,7vw,70px);
-  font-weight:900;
-  opacity:0;
-  z-index:10;
-  text-shadow:0 0 10px #ffcc00,0 0 20px #ff6600,0 0 40px #ff3300,0 0 80px #ff0000;
-  animation:neonPulse 2s infinite alternate;
-}
-@keyframes neonPulse{
-  from{transform:scale(1);filter:brightness(1)}
-  to{transform:scale(1.05);filter:brightness(1.6)}
-}
-.show{animation:fadeInOut 4s linear forwards;}
-@keyframes fadeInOut{
-  0%{opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{opacity:0}
-}
-
-/* MAIN CARD */
-.container{
-  max-width:360px;
-  margin:20px auto 160px;
-  background:#fff;
-  color:#000;
-  border-radius:22px;
-  padding:14px;
-  text-align:center;
-  box-shadow:0 30px 90px rgba(0,0,0,.7);
-  position:relative;
-  z-index:5;
-}
-h1{color:#ff5722;font-size:22px}
-#greet{font-weight:bold;margin:6px 0}
-
-/* IMAGE */
-.imgBox{
-  border-radius:16px;
-  overflow:hidden;
-  position:relative;
-  margin:10px 0;
-}
-.imgBox img{
-  width:100%;
-  display:block;
-  animation:imgZoom 8s ease-in-out infinite alternate;
-}
-@keyframes imgZoom{to{transform:scale(1.06)}}
-
-/* IMAGE TOP GLOW */
-.imageNeon{
-  position:absolute;
-  top:10%;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:24px;
-  font-weight:900;
-  animation:neonFlow 3s linear infinite;
-  text-shadow:0 0 10px currentColor,0 0 25px currentColor,0 0 60px currentColor;
-}
-@keyframes neonFlow{
-  0%{color:#ff1744}
-  25%{color:#ffea00}
-  50%{color:#00e5ff}
-  75%{color:#76ff03}
-  100%{color:#e040fb}
-}
-
-/* INPUT */
+h2{color:#ff5722}
+img{width:100%;border-radius:16px}
 input{
-  width:100%;
-  padding:12px;
-  font-size:16px;
-  border-radius:10px;
-  border:1px solid #ccc;
+width:100%;padding:12px;margin:10px 0;
+border-radius:10px;font-size:16px;
+border:1px solid #ccc;
 }
 
-/* SHARE BUTTON */
-.shareWrap{
-  position:fixed;
-  bottom:60px;
-  left:0;right:0;
-  padding:0 14px;
-  z-index:10;
+/* Share Bar */
+.share{
+position:fixed;bottom:18px;left:0;right:0;
+display:grid;grid-template-columns:1fr 1fr;
+gap:12px;padding:0 14px;z-index:10;
 }
-.shareBtn{
-  width:100%;
-  padding:18px;
-  border:none;
-  border-radius:26px;
-  background:linear-gradient(135deg,#25D366,#1ebc57);
-  color:#fff;
-  font-size:18px;
-  font-weight:900;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 0 30px rgba(37,211,102,.7),0 16px 40px rgba(0,0,0,.6);
+.btn{
+padding:15px;border-radius:30px;
+border:none;color:#fff;
+font-size:15px;font-weight:700;
+cursor:pointer;
+transition:.15s;
 }
-.shareBtn:active{transform:scale(.96);}
-.shareBtn svg{width:24px;height:24px;fill:#fff;}
+.btn:active{transform:scale(.94)}
+.wa{background:#25D366}
+.tg{background:#229ED9}
+.fb{background:#1877F2}
+.ig{background:#c13584}
 
-/* KITES */
-.kite{
-  position:fixed;
-  font-size:32px;
-  z-index:4;
-  animation:kiteFly 14s linear forwards;
-}
-@keyframes kiteFly{
-  from{transform:translate(-50px,100vh) rotate(0deg)}
-  to{transform:translate(110vw,-150px) rotate(25deg)}
+/* Ad box */
+.adbox{
+position:fixed;
+bottom:90px;
+left:50%;
+transform:translateX(-50%);
+z-index:9;
 }
 </style>
 </head>
+
 <body>
 
-<canvas id="bgCanvas"></canvas>
-<canvas id="frontCanvas"></canvas>
+<canvas id="fx"></canvas>
 
-<div id="text" class="neon-text">
-🎆 HAPPY MAKAR SANKRANTI 🎆<br>
-<span style="font-size:.6em">🪁 हार्दिक शुभकामनाएं 🪁</span>
-</div>
-
-<div class="container">
-<h1>🎆 Happy Makar Sankranti 🎆</h1>
-<div id="greet"></div>
-
-<div class="imgBox">
+<div class="card">
+<h2>🪁 Happy Makar Sankranti</h2>
+<div id="from"></div>
 <img src="IMG-20260106-WA0000.jpg">
-<div class="imageNeon">Happy Makar Sankranti</div>
+<input id="name" placeholder="Apna naam likhiye">
+<p>Hardik shubhkamnaye 🙏</p>
 </div>
 
-<input id="name" placeholder="अपना नाम लिखें">
-<p>🪁 हार्दिक शुभकामनाएं 🪁</p>
-</div>
-
-<div class="shareWrap">
-<button class="shareBtn" onclick="shareWhatsApp()">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-<path d="M12.04 2C6.48 2 2 6.48 2 12c0 2.11.55 4.08 1.51 5.79L2 22l4.42-1.46C7.92 21.45 9.95 22 12.04 22c5.56 0 10.04-4.48 10.04-10S17.6 2 12.04 2zm0 18c-1.81 0-3.5-.55-4.91-1.49l-.35-.22-2.62.87.88-2.55-.24-.36C4.63 14.03 4.04 13.03 4.04 12c0-4.42 3.6-8 8-8s8 3.58 8 8-3.6 8-8 8zm4.45-6.89c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12s-.62.78-.77.94c-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24 0-.37.1-.49.1-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.48-.4-.41-.54-.42-.14 0-.3-.02-.46-.02s-.42.06-.64.3c-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.52.58.2 1.1.17 1.52.1.46-.08 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/>
-</svg>
-Share with WhatsApp
-</button>
-</div>
-
-<!-- ADS -->
-<div style="position:fixed;bottom:0;width:100%;background:#000">
+<!-- ADS INTEGRATION -->
+<div class="adbox">
 <script>
-atOptions={'key':'ac7411ad1c4de0e2a8b62b4fac4711d7','format':'iframe','height':60,'width':468,'params':{}};
+  atOptions = {
+    'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
 </script>
 <script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
 </div>
 
+<div class="share">
+<button class="btn wa" onclick="shareNow('wa')">WhatsApp</button>
+<button class="btn tg" onclick="shareNow('tg')">Telegram</button>
+<button class="btn fb" onclick="shareNow('fb')">Facebook</button>
+<button class="btn ig" onclick="shareNow('ig')">Instagram</button>
+</div>
+
 <script>
-// GREETING
+/* ===== Greeting ===== */
 const q=new URLSearchParams(location.search);
-const from=q.get("from");
-if(from) document.getElementById("greet").innerText=`आपको ${from} की तरफ से शुभकामनाएं 🪁`;
-
-// WHATSAPP REDIRECT 100% FIX
-function shareWhatsApp(){
-  var n=document.getElementById("name").value.trim();
-  if(!n){alert("कृपया नाम लिखें"); return;}
-  var link=location.origin+location.pathname+"?from="+encodeURIComponent(n);
-  var msg="🎆 Happy Makar Sankranti 🎆\n🪁 "+n+" की तरफ से हार्दिक शुभकामनाएं 🪁\n"+link;
-
-  // Primary
-  var opened=window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
-
-  // Fallback
-  setTimeout(function(){
-    if(!opened || opened.closed){
-      location.assign("whatsapp://send?text="+encodeURIComponent(msg));
-    }
-  },300);
+if(q.get("from")){
+document.getElementById("from").innerText=
+q.get("from")+" ki taraf se shubhkamnaye 🙏";
 }
 
-// FIREWORKS
-const bg=bgCanvas,fg=frontCanvas;
-const bctx=bg.getContext("2d"),fctx=fg.getContext("2d");
-function rs(){bg.width=fg.width=innerWidth;bg.height=fg.height=innerHeight;}
-rs();addEventListener("resize",rs);
+/* ===== SHARE ENGINE (BUG-FREE) ===== */
+let lock=false;
+function uid(){
+return Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
 
-let parts=[];
-class P{
-  constructor(x,y){
-    this.x=x; this.y=y;
-    this.vx=(Math.random()-.5)*6;
-    this.vy=(Math.random()-.5)*6;
-    this.life=80;
-    this.h=Math.random()*360;
-  }
-  u(){this.vy+=0.05;this.x+=this.vx;this.y+=this.vy;this.life--;}
-  d(c){c.fillStyle=`hsl(${this.h},100%,60%)`; c.fillRect(this.x,this.y,3,3);}
+function shareNow(type){
+if(lock) return;
+const n=document.getElementById("name").value.trim();
+if(!n){alert("Naam likhiye");return;}
+lock=true;setTimeout(()=>lock=false,300);
+
+const base=location.origin+location.pathname;
+const link=base+"?from="+encodeURIComponent(n)+"&id="+uid();
+const text="🪁 Happy Makar Sankranti 🪁\n"+n+
+" ki taraf se 🙏\n"+link;
+
+if(type==="wa"){
+location.href="https://wa.me/?text="+encodeURIComponent(text);
 }
-function boom(){
-  let x=Math.random()*innerWidth;
-  let y=Math.random()*innerHeight*.5;
-  for(let i=0;i<200;i++) parts.push(new P(x,y));
+else if(type==="tg"){
+location.href="https://t.me/share/url?url="+
+encodeURIComponent(link)+"&text="+encodeURIComponent(text);
 }
-setInterval(boom,1200);
+else if(type==="fb"){
+location.href="https://www.facebook.com/sharer/sharer.php?u="+
+encodeURIComponent(link);
+}
+else if(type==="ig"){
+navigator.clipboard.writeText(text).then(()=>{
+window.open("https://www.instagram.com/","_blank");
+alert("Text copied ✔\nInstagram me paste kare");
+});
+}
+}
+
+/* ===== HEAVY SMOOTH EFFECTS ===== */
+const c=document.getElementById("fx"),ctx=c.getContext("2d");
+function rs(){c.width=innerWidth;c.height=innerHeight}
+rs();onresize=rs;
+
+let p=[];
+setInterval(()=>{
+let X=Math.random()*c.width,Y=Math.random()*c.height/2;
+for(let i=0;i<180;i++)
+p.push({
+x:X,y:Y,
+vx:(Math.random()-.5)*6,
+vy:(Math.random()-.5)*6,
+l:100,
+h:Math.random()*360
+});
+},800);
 
 (function anim(){
-  bctx.clearRect(0,0,bg.width,bg.height);
-  fctx.clearRect(0,0,fg.width,fg.height);
-  parts.forEach((p,i)=>{p.u();p.d(fctx);if(p.life<=0) parts.splice(i,1);});
-  requestAnimationFrame(anim);
+ctx.fillStyle="rgba(0,0,0,.28)";
+ctx.fillRect(0,0,c.width,c.height);
+p.forEach((e,i)=>{
+e.x+=e.vx;e.y+=e.vy;
+e.vy+=.04;e.l--;
+ctx.fillStyle=`hsla(${e.h},100%,60%,${e.l/100})`;
+ctx.fillRect(e.x,e.y,3,3);
+if(e.l<=0)p.splice(i,1);
+});
+requestAnimationFrame(anim);
 })();
-
-// NEON MESSAGE LOOP
-setInterval(()=>{
-  text.classList.remove("show");
-  void text.offsetWidth;
-  text.classList.add("show");
-},5000);
-
-// FLYING KITES
-setInterval(()=>{
-  let k=document.createElement("div");
-  k.className="kite"; k.style.left=Math.random()*50+"vw"; k.innerText="🪁";
-  document.body.appendChild(k);
-  setTimeout(()=>k.remove(),14000);
-},3500);
 </script>
+
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🪁 Happy Makar Sankranti</title>
+
+<style>
+html,body{
+margin:0;padding:0;background:#000;
+font-family:Segoe UI,Arial;color:#fff;overflow:hidden;
+}
+canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* Card */
+.card{
+max-width:360px; :22px auto 220px;
+background:#fff;color:#000;border-radius:22px;
+padding:14px;text-align:center;
+z-index:5;position:relative;
+box-shadow:0 30px 100px rgba(0,0,0,.8);
+animation:pop .8s ease;
+}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{scale:1;opacity:1}}
+
+h2{color:#ff5722}
+img{width:100%;border-radius:16px}
+input{
+width:100%;padding:12px;margin:10px 0;
+border-radius:10px;font-size:16px;
+border:1px solid #ccc;
+}
+
+/* Share Bar */
+.share{
+position:fixed;bottom:18px;left:0;right:0;
+display:grid;grid-template-columns:1fr 1fr;
+gap:12px;padding:0 14px;z-index:10;
+}
+.btn{
+padding:15px;border-radius:30px;
+border:none;color:#fff;
+font-size:15px;font-weight:700;
+cursor:pointer;
+transition:.15s;
+}
+.btn:active{transform:scale(.94)}
+.wa{background:#25D366}
+.tg{background:#229ED9}
+.fb{background:#1877F2}
+.ig{background:#c13584}
+
+/* Ad box */
+.adbox{
+position:fixed;
+bottom:90px;
+left:50%;
+transform:translateX(-50%);
+z-index:9;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fx"></canvas>
+
+<div class="card">
+<h2>🪁 Happy Makar Sankranti</h2>
+<div id="from"></div>
+<img src="IMG-20260106-WA0000.jpg">
+<input id="name" placeholder="Apna naam likhiye">
+<p>Hardik shubhkamnaye 🙏</p>
+</div>
+
+<!-- ADS INTEGRATION -->
+<div class="adbox">
+<script>
+  atOptions = {
+    'key' : 'ac7411ad1c4de0e2a8b62b4fac4711d7',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/ac7411ad1c4de0e2a8b62b4fac4711d7/invoke.js"></script>
+</div>
+
+<div class="share">
+<button class="btn wa" onclick="shareNow('wa')">WhatsApp</button>
+<button class="btn tg" onclick="shareNow('tg')">Telegram</button>
+<button class="btn fb" onclick="shareNow('fb')">Facebook</button>
+<button class="btn ig" onclick="shareNow('ig')">Instagram</button>
+</div>
+
+<script>
+/* ===== Greeting ===== */
+const q=new URLSearchParams(location.search);
+if(q.get("from")){
+document.getElementById("from").innerText=
+q.get("from")+" ki taraf se shubhkamnaye 🙏";
+}
+
+/* ===== SHARE ENGINE (BUG-FREE) ===== */
+let lock=false;
+function uid(){
+return Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
+
+function shareNow(type){
+if(lock) return;
+const n=document.getElementById("name").value.trim();
+if(!n){alert("Naam likhiye");return;}
+lock=true;setTimeout(()=>lock=false,300);
+
+const base=location.origin+location.pathname;
+const link=base+"?from="+encodeURIComponent(n)+"&id="+uid();
+const text="🪁 Happy Makar Sankranti 🪁\n"+n+
+" ki taraf se 🙏\n"+link;
+
+if(type==="wa"){
+location.href="https://wa.me/?text="+encodeURIComponent(text);
+}
+else if(type==="tg"){
+location.href="https://t.me/share/url?url="+
+encodeURIComponent(link)+"&text="+encodeURIComponent(text);
+}
+else if(type==="fb"){
+location.href="https://www.facebook.com/sharer/sharer.php?u="+
+encodeURIComponent(link);
+}
+else if(type==="ig"){
+navigator.clipboard.writeText(text).then(()=>{
+window.open("https://www.instagram.com/","_blank");
+alert("Text copied ✔\nInstagram me paste kare");
+});
+}
+}
+
+/* ===== HEAVY SMOOTH EFFECTS ===== */
+const c=document.getElementById("fx"),ctx=c.getContext("2d");
+function rs(){c.width=innerWidth;c.height=innerHeight}
+rs();onresize=rs;
+
+let p=[];
+setInterval(()=>{
+let X=Math.random()*c.width,Y=Math.random()*c.height/2;
+for(let i=0;i<180;i++)
+p.push({
+x:X,y:Y,
+vx:(Math.random()-.5)*6,
+vy:(Math.random()-.5)*6,
+l:100,
+h:Math.random()*360
+});
+},800);
+
+(function anim(){
+ctx.fillStyle="rgba(0,0,0,.28)";
+ctx.fillRect(0,0,c.width,c.height);
+p.forEach((e,i)=>{
+e.x+=e.vx;e.y+=e.vy;
+e.vy+=.04;e.l--;
+ctx.fillStyle=`hsla(${e.h},100%,60%,${e.l/100})`;
+ctx.fillRect(e.x,e.y,3,3);
+if(e.l<=0)p.splice(i,1);
+});
+requestAnimationFrame(anim);
+})();
+</script>
+
+</body>
+</html
+<!-- FRONT FIREWORKS CANVAS -->
+<canvas id="frontFx"></canvas>
+
+<style>
+#frontFx{
+position:fixed;
+inset:0;
+z-index:8; /* card ke upar, ads ke neeche */
+pointer-events:none;
+}
+</style>
+
+<script>
+/* ===== FRONT FLYING FIREWORKS BLASTER ===== */
+const fc=document.getElementById("frontFx");
+const f=fc.getContext("2d");
+function fr(){fc.width=innerWidth;fc.height=innerHeight}
+fr();addEventListener("resize",fr);
+
+let rockets=[], blasts=[];
+
+/* Rocket class */
+function launchRocket(){
+rockets.push({
+x:Math.random()*fc.width,
+y:fc.height+20,
+vy:- (7+Math.random()*4),
+target:Math.random()*fc.height*0.4,
+color:`hsl(${Math.random()*360},100%,60%)`
+});
+}
+setInterval(launchRocket,700);
+
+/* Explosion */
+function explode(x,y,color){
+for(let i=0;i<120;i++){
+blasts.push({
+x,y,
+vx:(Math.random()-.5)*8,
+vy:(Math.random()-.5)*8,
+life:90,
+color
+});
+}
+}
+
+/* Animation loop */
+(function frontAnim(){
+f.clearRect(0,0,fc.width,fc.height);
+
+/* Rockets */
+rockets.forEach((r,i)=>{
+r.y+=r.vy;
+f.fillStyle=r.color;
+f.beginPath();
+f.arc(r.x,r.y,2.5,0,Math.PI*2);
+f.fill();
+
+if(r.y<=r.target){
+explode(r.x,r.y,r.color);
+rockets.splice(i,1);
+}
+});
+
+/* Blasts */
+blasts.forEach((b,i)=>{
+b.x+=b.vx;
+b.y+=b.vy;
+b.vy+=0.05;
+b.life--;
+
+f.fillStyle=`rgba(255,255,255,${b.life/100})`;
+f.shadowBlur=15;
+f.shadowColor=b.color;
+f.fillRect(b.x,b.y,3,3);
+f.shadowBlur=0;
+
+if(b.life<=0)blasts.splice(i,1);
+});
+
+requestAnimationFrame(frontAnim);
+})();
+</script>
